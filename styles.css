@@ -1,0 +1,37 @@
+#header_box {
+    border-color: red;
+}
+
+#results{
+    border-color:green;
+}
+
+#map_view{
+    border-color:orange;
+}
+ 
+#filter_preview{
+    border-color:blueviolet;
+    margin-bottom: 4%;
+}
+
+#results_preview{
+    border-color:chartreuse;
+    height:300px;
+}
+
+#map_preview{
+    height: 300px;
+    border-color:yellow;
+    margin-bottom: 5%;
+}
+
+#weather_preview{
+    height: 200px;
+    border-color: cadetblue;
+}
+
+.border-view{
+    border-style:solid;
+    text-align: center;
+}

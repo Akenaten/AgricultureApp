@@ -30,7 +30,8 @@ var basket = {'cake' : 'sweet'};
 //DATA SENDING
 app.get("/data-request" , async function(req, res){
     await main();
-    res.send(DATA);
+    setTimeout(()=>{res.send(DATA);} , 1000);
+    
     
 })
 
@@ -38,7 +39,7 @@ app.get("/data-request" , async function(req, res){
 
 async function GetWeatherData(){
     
-    await https.get(URL , 
+     https.get(URL , 
     res =>{
     
         let responseBody = '';
@@ -59,11 +60,9 @@ async function GetWeatherData(){
 
 async function main(){
     await GetWeatherData();
-    //setTimeout(()=>{console.log(DATA)}, 2000);
-    
     };
 
-    main();
+    
 
 
 

@@ -1,3 +1,15 @@
+#overlayWindow{
+    position: fixed;
+    background-color:blanchedalmond;
+    margin-top: 20px;
+    margin-left: 25%;
+    height:700px;
+    width:50%;
+    top: 0; left: 0;
+    visibility: hidden;
+    
+}
+
 #header_box {
     border-color: red;
 }
@@ -33,5 +45,24 @@
 
 .border-view{
     border-style:solid;
+    text-align: center;
+}
+
+/* Formatting of the results */
+.resformat{  
+    width:100px;
+    height: 100px;
+}
+
+.enlarged{
+    width:350px;
+    height: 350px;
+}
+
+.testing{
+    
+    border-style:solid;
+    border-color:red;
+    margin:1% 0;
     text-align: center;
 }

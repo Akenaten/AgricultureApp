@@ -31,13 +31,15 @@ body.addEventListener("click" , ()=>{
 });
 //#endregion
 
-
+var PLANTLIST;
 
 
 //Results & Filters Section-----------------------------------------------------------------------------------------------
   var plantA = {'name': 'Cherry blossom' , 'color' : 'purple' , 'season' : 'spring' , 'source' : 'images/cherryBlossom.png'};
   var plantB = {'name': 'Oak' , 'color' : 'brown' , 'season' : 'autumn' , 'source' : 'images/Oak.png' };
   var plantC = {'name': 'Olive' , 'color' : 'green' , 'season' : 'summer', 'source' : 'images/Olive.png' };
+
+ 
   
 
 
@@ -77,8 +79,8 @@ function buildResultItem(plant , index){
 }
 
 function produceResults(){ // Building the result list loop
-  for(var i = 0; i < plantList.length ; i++){
-    buildResultItem(plantList[i] , i);
+  for(var i = 0; i < PLANTLIST.length ; i++){
+    buildResultItem(PLANTLIST[i] , i);
   }
 }
 
@@ -97,10 +99,10 @@ function showPlant(id){
   image.className = "enlarged";
 
 
-  nameSection.innerText = "Name:" + plantList[id].name;
-  extraSection.innerText = "Color: " + plantList[id].color;
-  detailSection.innerText = "Season: " + plantList[id].season;
-  dangerSection.innerText = "Dangers: None";
+  nameSection.innerText = "Name:" + PLANTLIST[id].names[0];
+  extraSection.innerText = "Species: " + PLANTLIST[id].species;
+  detailSection.innerText = "Season: " + PLANTLIST[id].season;
+  dangerSection.innerText = "Dangers: " + PLANTLIST[id].toxicity;
   
 }
 
@@ -130,16 +132,17 @@ async function updateWEatherPreview() {
 }
 
 
+//Plant Database Section-----------------------------------------------------------------------------------------
+async function updatePlantItems(){
+  var response = await fetch("/plant-request");
+  PLANTLIST = await response.json();
+  produceResults();
+  
+}
 
 
 
 
-produceResults();
 
-
-
-
-
-
-
-updateWEatherPreview();
+updatePlantItems();
+//updateWEatherPreview();

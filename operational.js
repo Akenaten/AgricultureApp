@@ -13,6 +13,12 @@ var weatherPrompt = document.getElementById("currentWeather");
 const resultsSection = document.getElementById("resultsView");
 const overlayWindow = document.getElementById("overlayWindow");
 const body = document.getElementById("mainContainer");
+const countryInput = document.getElementById("countryInput");
+const weatherButton = document.getElementById("weatherUpdate");
+const weatherBox = document.getElementById("weather_preview");
+const seasonFilterOption = document.getElementById("seasonFilter");
+const climateFilterOption = document.getElementById("climateFilter");
+const filterButton = document.getElementById("filterButton");
 //#endregion
 
 
@@ -29,28 +35,41 @@ body.addEventListener("click" , ()=>{
     overlayWindow.style.visibility = "hidden";
   }
 });
+
+weatherButton.addEventListener("click" , ()=>{
+  //console.log(countryInput.value);
+  updateWEatherPreview(countryInput.value);
+})
+
+filterButton.addEventListener("click" , ()=>{updatePlantItems(true);});
 //#endregion
+
+// DEBUG FUNCTION 
+document.addEventListener('keypress' , (event)=>{
+  
+  //console.log(event.key);
+  if(event.key == "c"){   // C TO CLEAR RESULTS
+  //resultsSection.innerText = "";
+  //console.log(seasonFilterOption.value , climateFilterOption.value);
+  } else if(event.key == "r"){ //R TO REPOPULATE
+    //updatePlantItems(true);
+  }
+  
+});
+
 
 var PLANTLIST;
 
 
 //Results & Filters Section-----------------------------------------------------------------------------------------------
-  var plantA = {'name': 'Cherry blossom' , 'color' : 'purple' , 'season' : 'spring' , 'source' : 'images/cherryBlossom.png'};
-  var plantB = {'name': 'Oak' , 'color' : 'brown' , 'season' : 'autumn' , 'source' : 'images/Oak.png' };
-  var plantC = {'name': 'Olive' , 'color' : 'green' , 'season' : 'summer', 'source' : 'images/Olive.png' };
 
- 
-  
-
-
-  const plantList = [plantA , plantB , plantC];
 
 
 
 
 // #region Building the result list
 
-function buildResultItem(plant , index){
+function buildResultItem(index , targetList){
 
   //Creating the elements
   var division = document.createElement("div");
@@ -60,13 +79,13 @@ function buildResultItem(plant , index){
   //Adding classes etc.
   division.className = "col-2";
   button.className = "btn btn-outline-primary";
-  image.setAttribute('src' , plantList[index].source);
+  image.setAttribute('src' , targetList[index].source);
   image.className = "resformat";
 
 
   //ADDING FUNCTIONALITY TO EACH BUTTON
   button.addEventListener('click' , (event)=>{
-    showPlant(index);
+    showPlant(index , targetList);
     event.stopPropagation();
     
   })
@@ -78,14 +97,19 @@ function buildResultItem(plant , index){
   
 }
 
-function produceResults(){ // Building the result list loop
-  for(var i = 0; i < PLANTLIST.length ; i++){
-    buildResultItem(PLANTLIST[i] , i);
+function produceResults(targetList) { // Building the result list loop
+  if (targetList.length == 0) {
+    resultsSection.innerHTML = "<p style='text-align: center'>No results were found matching your criteria.</p>";
+  } else {
+    for (var i = 0; i < targetList.length; i++) {
+      //console.log("Building items...");
+      buildResultItem(i, targetList);
+    }
   }
 }
 
 // Called whenever you click on a button. Should format the data on the overlay window.
-function showPlant(id){ 
+function showPlant(id , targetList){ 
   
   overlayWindow.style.visibility = "visible";
 
@@ -95,14 +119,14 @@ function showPlant(id){
   const detailSection = document.getElementById("detailSection");
   const dangerSection = document.getElementById("dangerSection");
 
-  image.setAttribute('src' , plantList[id].source);
+  image.setAttribute('src' , targetList[id].source);
   image.className = "enlarged";
 
 
-  nameSection.innerText = "Name:" + PLANTLIST[id].names[0];
-  extraSection.innerText = "Species: " + PLANTLIST[id].species;
-  detailSection.innerText = "Season: " + PLANTLIST[id].season;
-  dangerSection.innerText = "Dangers: " + PLANTLIST[id].toxicity;
+  nameSection.innerText = "Name:" + targetList[id].names[0];
+  extraSection.innerText = "Species: " + targetList[id].species;
+  detailSection.innerText = "Season: " + targetList[id].season;
+  dangerSection.innerText = "Dangers: " + targetList[id].toxicity;
   
 }
 
@@ -118,8 +142,9 @@ function showPlant(id){
 
 
 //Weather Section-----------------------------------------------------------------------------------------------------------
-async function updateWEatherPreview() {
-  var response = await fetch("/data-request");
+async function updateWEatherPreview(country) {
+  if(country == "" || country == undefined) country = "Greece";
+  var response = await fetch(`/data-request/${country}`);
   var data = await response.json();
 
 
@@ -127,22 +152,84 @@ async function updateWEatherPreview() {
   weatherPrompt.innerText = data.weather[0].main;
   tempraturePrompt.innerText = data.main.temp + " Celsius.";
   humPrompt.innerText = data.main.humidity + "%";
+  applyWeatherStyling(data.weather[0].main);
   
   
 }
 
 
 //Plant Database Section-----------------------------------------------------------------------------------------
-async function updatePlantItems(){
-  var response = await fetch("/plant-request");
-  PLANTLIST = await response.json();
-  produceResults();
+async function updatePlantItems(filter = false){
+  resultsSection.innerText = "";
+  //console.log("Sending request...");
+  if(filter){
+    //console.log("Filter set to true.");
+    var response = await fetch(`/plant-request?` + new URLSearchParams({season : seasonFilterOption.value , climate: climateFilterOption.value}));
+  } else {
+    var response = await fetch("/plant-request");
+  }
   
+  PLANTLIST = await response.json();
+  console.log(PLANTLIST);
+  //console.log("Calling production function...");
+  produceResults(PLANTLIST);
+  //console.log("Call completed.");
+}
+
+
+function applyWeatherStyling(weather){
+  switch(weather){
+    case "Clouds":
+      weatherBox.style.background = "linear-gradient(90deg, rgba(189,189,204,1) 0%, rgba(225,225,230,1) 50%, rgba(143,141,140,1) 100%)";
+      break;
+    case "Clear":
+      weatherBox.style.background = "linear-gradient(40deg, rgba(152,234,252,1) 0%, rgba(247,244,201,1) 50%, rgba(124,190,247,1) 100%)";
+      break;
+    case "Rain":
+      weatherBox.style.background = "linear-gradient(90deg, rgba(200,224,244,1) 0%, rgba(121,156,182,1) 50%, rgba(185,191,196,1) 100%)";
+      break;
+    case "Drizzle":
+      weatherBox.style.background = "linear-gradient(90deg, rgba(158,206,246,1) 0%, rgba(121,156,182,1) 50%, rgba(185,191,196,1) 100%)";
+      break;
+    case "Thunderstorm":
+      weatherBox.style.background = "linear-gradient(90deg, rgba(123,126,97,1) 0%, rgba(77,77,77,1) 50%, rgba(141,142,122,1) 100%)";
+      break;
+      case "Snow":
+        weatherBox.style.background = "linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(188,226,255,1) 50%, rgba(255,255,255,1) 100%)";
+        break;
+        case "Mist":
+      weatherBox.style.background = "linear-gradient(90deg, rgba(233,248,255,1) 0%, rgba(171,198,209,1) 29%, rgba(228,228,228,1) 100%)";
+      break;
+      case "Smoke":
+      weatherBox.style.background = "linear-gradient(90deg, rgba(149,149,149,1) 0%, rgba(85,85,85,1) 44%, rgba(93,93,93,1) 100%)";
+      break;
+      case "Haze":
+      weatherBox.style.background = "linear-gradient(90deg, rgba(189,189,204,1) 0%, rgba(225,225,230,1) 50%, rgba(143,141,140,1) 100%)";
+      break;
+      case "Dust":
+      weatherBox.style.background = "linear-gradient(90deg, rgba(226,217,192,1) 0%, rgba(195,180,166,1) 44%, rgba(156,140,134,1) 100%;";
+      break;
+      case "Fog":
+      weatherBox.style.background = "linear-gradient(90deg, rgba(233,248,255,1) 0%, rgba(171,198,209,1) 29%, rgba(228,228,228,1) 100%)";
+      break;
+      case "Squall":
+      weatherBox.style.background = "linear-gradient(90deg, rgba(189,189,204,1) 0%, rgba(225,225,230,1) 50%, rgba(143,141,140,1) 100%)";
+      break;
+      case "Tornado":
+      weatherBox.style.background = "linear-gradient(90deg, rgba(189,189,204,1) 0%, rgba(225,225,230,1) 50%, rgba(143,141,140,1) 100%)";
+      break;
+    default:
+      weatherBox.style.background = "green";
+  }
+  
+
 }
 
 
 
+function loadPanels(){
+  setTimeout(()=>{updateWEatherPreview();} , 1000);
+  setTimeout(()=>{updatePlantItems();} , 3000);
+}
 
-
-updatePlantItems();
-//updateWEatherPreview();
+loadPanels();

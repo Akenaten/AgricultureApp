@@ -67,7 +67,33 @@
             <div id="results" class="border-view col-6">
 
                 <div id="filter_preview" class="border-view">
-                    FILTER PREVIEW
+                    <div class = "row">
+                        <div class ="col-3">
+                            <select id="climateFilter" class="form-select" aria-label="Default select example">
+                                <option selected>Climate</option>
+                                <option value="Mild">Mild</option>
+                                <option value="Average">Average</option>
+                                <option value="Harsh">Harsh</option>
+                                <option value="Extreme">Extreme</option>
+                              </select>
+                        </div>
+
+                        <div class ="col-3">
+                            <select id="seasonFilter" class="form-select" aria-label="Default select example">
+                                <option selected>Season</option>
+                                <option value="Spring">Spring</option>
+                                <option value="Summer">Summer</option>
+                                <option value="Autumn">Autumn</option>
+                                <option value="Winter">Winter</option>
+                              </select>
+                        </div>
+
+                        <div class ="col-3 border-view">
+                           <button id="filterButton"> APPLY FILTERS </button>
+                        </div>
+
+                    </div>
+                    
                 </div>
 
                 <div id="results_preview" class="border-view">
@@ -93,6 +119,9 @@
 
                 <div id="map_preview" class="border-view">
                     MAP PREVIEW
+                        <input placeholder="Country Name" id="countryInput">
+                        <button id = "weatherUpdate">UPDATE WEATHER </button>
+                        
                 </div>
 
                 <div id="weather_preview" class="border-view">

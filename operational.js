@@ -75,10 +75,13 @@ function buildResultItem(index , targetList){
   var division = document.createElement("div");
   var image = document.createElement("img");
   var button = document.createElement("button");
+  var itemName = document.createElement("p");
+  itemName.innerText = targetList[index].names[0];
 
   //Adding classes etc.
   division.className = "col-2";
   button.className = "btn btn-outline-primary";
+  button.style.height = "100%";
   image.setAttribute('src' , targetList[index].source);
   image.className = "resformat";
 
@@ -94,6 +97,7 @@ function buildResultItem(index , targetList){
   resultsSection.appendChild(division);
   division.appendChild(button);
   button.appendChild(image);
+  button.appendChild(itemName);
   
 }
 

@@ -12,14 +12,31 @@
 
 #header_box {
     border-color: red;
+    height:200px;
+    
+    
+}
+
+/* IN DIRE NEED OF FIXING */
+
+#headerImage{
+    position: relative;
+    height: 200%;
+    width:100%;
+    bottom:90%;
+    z-index:-1;
+    
+    
 }
 
 #results{
     border-color:green;
+    background: linear-gradient(90deg, hsla(152, 60%, 76%, 1) 0%, hsla(127, 89%, 76%, 1) 100%);
 }
 
 #map_view{
     border-color:orange;
+    background: radial-gradient(circle, hsla(47, 60%, 76%, 1) 0%, hsla(39, 100%, 67%, 1) 100%);
 }
  
 #filter_preview{
@@ -30,6 +47,8 @@
 #results_preview{
     border-color:chartreuse;
     height:300px;
+    
+    
 }
 
 #map_preview{
@@ -42,6 +61,13 @@
     height: 200px;
     border-color: cadetblue;
 }
+
+#rowForm{
+    margin-top: 2%;
+}
+
+
+
 
 .border-view{
     border-style:solid;
@@ -66,3 +92,4 @@
     margin:1% 0;
     text-align: center;
 }
+

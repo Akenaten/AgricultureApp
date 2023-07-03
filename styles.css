@@ -1,3 +1,33 @@
+:root{
+    --baseDuration: .5s;
+}
+
+@keyframes focusOnSelection{
+    0% {filter: brightness(1);}
+    100% {filter: brightness(.5);}
+}
+
+@keyframes removeFocus{
+    0% {filter: brightness(.5);}
+    100% {filter: brightness(1);}
+
+}
+
+
+
+.focusOn{
+    animation-name: focusOnSelection;
+    animation-duration: var(--baseDuration);
+    animation-fill-mode: forwards;
+}
+
+.focusOff{
+    animation-name: removeFocus;
+    animation-duration: var(--baseDuration);
+    animation-fill-mode: forwards;
+
+}
+
 #overlayWindow{
     position: fixed;
     background-color:blanchedalmond;
@@ -7,6 +37,7 @@
     width:50%;
     top: 0; left: 0;
     visibility: hidden;
+    z-index: 1;
     
 }
 
@@ -64,13 +95,14 @@
 
 #rowForm{
     margin-top: 2%;
+    background-color: purple;
 }
 
 
 
 
 .border-view{
-    border-style:solid;
+    /* border-style:solid; */
     text-align: center;
 }
 
@@ -92,4 +124,17 @@
     margin:1% 0;
     text-align: center;
 }
+
+.focusable{
+    animation-name: focusOnSelection;
+    animation-duration: 5s;
+    animation-fill-mode: forwards;
+    animation-direction:normal;
+    
+}
+
+
+
+
+
 

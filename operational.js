@@ -19,6 +19,11 @@ const weatherBox = document.getElementById("weather_preview");
 const seasonFilterOption = document.getElementById("seasonFilter");
 const climateFilterOption = document.getElementById("climateFilter");
 const filterButton = document.getElementById("filterButton");
+
+const mapview = document.getElementById("map_view");
+const resview = document.getElementById("results");
+const headview = document.getElementById("header_box");
+const focusElements = [mapview , resview , headview];
 //#endregion
 
 
@@ -33,6 +38,11 @@ body.addEventListener("click" , ()=>{
   {
     console.log("Event has reached body!");
     overlayWindow.style.visibility = "hidden";
+    
+    focusElements.forEach(element => {
+      element.classList.remove("focusOn");
+      element.classList.add("focusOff");
+    });
   }
 });
 
@@ -52,6 +62,10 @@ document.addEventListener('keypress' , (event)=>{
   //resultsSection.innerText = "";
   //console.log(seasonFilterOption.value , climateFilterOption.value);
   } else if(event.key == "r"){ //R TO REPOPULATE
+    console.log("R button pressed.");
+
+    
+    
     //updatePlantItems(true);
   }
   
@@ -117,6 +131,11 @@ function showPlant(id , targetList){
   
   overlayWindow.style.visibility = "visible";
 
+  focusElements.forEach(element => {
+    element.classList.remove("focusOff");
+    element.classList.add("focusOn");
+  });
+
   const image = document.getElementById("imgSection");
   const nameSection = document.getElementById("nameSection");
   const extraSection = document.getElementById("extraSection");
@@ -164,7 +183,7 @@ async function updateWEatherPreview(country) {
 
 //Plant Database Section-----------------------------------------------------------------------------------------
 async function updatePlantItems(filter = false){
-  resultsSection.innerText = "";
+
   //console.log("Sending request...");
   if(filter){
     //console.log("Filter set to true.");
@@ -176,6 +195,7 @@ async function updatePlantItems(filter = false){
   PLANTLIST = await response.json();
   console.log(PLANTLIST);
   //console.log("Calling production function...");
+  resultsSection.innerText = "";
   produceResults(PLANTLIST);
   //console.log("Call completed.");
 }

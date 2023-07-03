@@ -1,4 +1,5 @@
 //DEPENDENCIES SETUP
+require('dotenv').config()
 const express = require("express");
 const https = require("https");
 const ejs = require("ejs");
@@ -12,8 +13,7 @@ const localPort = 3000;
 // #region MongoDB LOCAL CONNECT & SETUP
 async function DBconnect(){
     await mongoose.connect('mongodb://127.0.0.1:27017/PlantsDB').then(() => {
-        //console.log('Connected to MongoDB!');
-        //console.log('Connection ready state:' , mongoose.connection.readyState);
+    
     });
 }
 
@@ -41,12 +41,12 @@ app.get("/" , (req, res) => {
 
 
 var countryName = "Greece"
-var URL = `https://api.openweathermap.org/data/2.5/weather?appid=8109d761a64f8595e1ff5763f3f86e73&q=${countryName}&units=metric`;
+var URL = `https://api.openweathermap.org/data/2.5/weather?appid=${process.env.weatherKey}&q=${countryName}&units=metric`;
 
 //weather DATA SENDING
 app.get("/data-request/:country" , async function(req, res){
     //console.log(req.params.country);
-    URL = `https://api.openweathermap.org/data/2.5/weather?appid=8109d761a64f8595e1ff5763f3f86e73&q=${req.params.country}&units=metric`
+    URL = `https://api.openweathermap.org/data/2.5/weather?appid=${process.env.weatherKey}&q=${req.params.country}&units=metric`
     //console.log(URL);
     await main();
     setTimeout(()=>{res.send(DATA);} , 1000);

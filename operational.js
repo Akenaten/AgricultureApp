@@ -1,6 +1,12 @@
 
 
 // #region Weather Preview vars
+
+//const { set } = require("mongoose");
+const rootStyles = getComputedStyle(document.documentElement);
+const errorDuration = rootStyles.getPropertyValue('--errorDuration').charAt(0);
+console.log(errorDuration);
+
 //---------------------------------------------------
 var tempraturePrompt = document.getElementById("currentTemp");
 var countryPrompt = document.getElementById("currentCountry");
@@ -19,6 +25,7 @@ const weatherBox = document.getElementById("weather_preview");
 const seasonFilterOption = document.getElementById("seasonFilter");
 const climateFilterOption = document.getElementById("climateFilter");
 const filterButton = document.getElementById("filterButton");
+const countryNamePreview = document.getElementById("weatherNamePrompt");
 
 const mapview = document.getElementById("map_view");
 const resview = document.getElementById("results");
@@ -167,18 +174,51 @@ function showPlant(id , targetList){
 //Weather Section-----------------------------------------------------------------------------------------------------------
 async function updateWEatherPreview(country) {
   if(country == "" || country == undefined) country = "Greece";
+  //console.log(country);
   var response = await fetch(`/data-request/${country}`);
   var data = await response.json();
+  //console.log(data.name);
+
+  if(data.name == undefined){
+
+    countryNamePreview.classList.toggle("onInvalidName");
+    setTimeout(()=>{countryNamePreview.classList.toggle("onInvalidName");} , errorDuration * 1000);
+    countryPrompt.innerText = "Invalid country name.";
+    weatherPrompt.innerText ="";
+     tempraturePrompt.innerText = "";
+      humPrompt.innerText = "";
+  } else {
+    countryPrompt.innerText = data.name;
+    weatherPrompt.innerText = data.weather[0].main;
+    tempraturePrompt.innerText = data.main.temp + " Celsius.";
+    humPrompt.innerText = data.main.humidity + "%";
+    applyWeatherStyling(data.weather[0].main);
+
+  }
 
 
-  countryPrompt.innerText = data.name;
-  weatherPrompt.innerText = data.weather[0].main;
-  tempraturePrompt.innerText = data.main.temp + " Celsius.";
-  humPrompt.innerText = data.main.humidity + "%";
-  applyWeatherStyling(data.weather[0].main);
   
   
 }
+
+//#region Map Section
+var map = L.map('map_preview').setView([51.505, -0.09], 3);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+  
+function onMapClick(event){
+  var coordinates = `${event.latlng.lat},${event.latlng.lng}`;
+  updateWEatherPreview(coordinates);
+  
+  
+
+}
+
+map.on("click" , (event)=>{onMapClick(event)});
+
+//#endregion
 
 
 //Plant Database Section-----------------------------------------------------------------------------------------

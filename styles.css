@@ -1,5 +1,6 @@
 :root{
     --baseDuration: .5s;
+    --errorDuration: 2s;
 }
 
 @keyframes focusOnSelection{
@@ -11,6 +12,21 @@
     0% {filter: brightness(.5);}
     100% {filter: brightness(1);}
 
+}
+
+@keyframes hightlightError{
+    0% {
+        background-color: yellow;
+    }
+    100%{
+        background-color: transparent;
+    }
+}
+
+.onInvalidName{
+    animation-name: hightlightError;
+    animation-duration: var(--errorDuration);
+    
 }
 
 
@@ -68,6 +84,7 @@
 #map_view{
     border-color:orange;
     background: radial-gradient(circle, hsla(47, 60%, 76%, 1) 0%, hsla(39, 100%, 67%, 1) 100%);
+    height:auto;
 }
  
 #filter_preview{
@@ -85,10 +102,11 @@
 #map_preview{
     height: 300px;
     border-color:yellow;
-    margin-bottom: 5%;
+    margin: 5% 0;
 }
 
 #weather_preview{
+    margin: 2% 0;
     height: 200px;
     border-color: cadetblue;
 }

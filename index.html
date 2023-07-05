@@ -10,6 +10,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    
+
     <link type="text/css" href="styles.css" rel="stylesheet">
 </head>
 
@@ -123,14 +130,19 @@
 
                 <div id="map_preview" class="border-view">
                     MAP PREVIEW
-                        <input placeholder="Country Name" id="countryInput">
-                        <button id = "weatherUpdate" class="btn btn-info">UPDATE WEATHER </button>
-                        
+                    
+                </div>
+                <div>
+                    <input placeholder="Country Name" id="countryInput">
+                    <button id = "weatherUpdate" class="btn btn-info">UPDATE WEATHER </button>
+
                 </div>
 
                 <div id="weather_preview" class="border-view">
                     WEATHER PREVIEW
+                    <div id="weatherNamePrompt" class="">
                     <p> Location: <i id="currentCountry"> </i> </p>
+                    </div>
                     <p> Weather Condition: <i id="currentWeather"> </i> </p>
                     <p> Current Temprature: <i id="currentTemp"> </i> </p>
                     <p> Humidity Level: <i id="currentHum"> </i> </p>
@@ -146,10 +158,3 @@
 
 </html>
 
-
-<!-- 
-<div>
-    <button class="btn btn-outline-primary" onclick="alert('Hello world!')">
-        <img src="images/testplant.png" class="resformat" />
-    </button>
-</div> -->

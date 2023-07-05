@@ -88,9 +88,26 @@ app.get("/", (req, res) => {
 
 //weather DATA SENDING
 app.get("/data-request/:country", async function (req, res) {
-    URL = `https://api.openweathermap.org/data/2.5/weather?appid=${process.env.weatherKey}&q=${req.params.country}&units=metric`
+    var temp = `${req.params.country}`;
+    if(temp.includes(",")){
+        //console.log("Received coordinates for weather.");
+
+    var Coordinates = temp.split(",");
+        URL = `https://api.openweathermap.org/data/2.5/weather?lat=${Coordinates[0]}&lon=${Coordinates[1]}&appid=${process.env.weatherKey}&units=metric`;
+    } 
+    
+    else{
+        //console.log("Received country for weather.");
+        URL = `https://api.openweathermap.org/data/2.5/weather?appid=${process.env.weatherKey}&q=${temp}&units=metric`;
+    }
+
+    
     await main();
-    setTimeout(() => { res.send(DATA); }, 1000);
+    setTimeout(() => { res.send(DATA); }, 500);
+
+
+
+
 
 
 })
@@ -98,7 +115,7 @@ app.get("/data-request/:country", async function (req, res) {
 //plant DATA SENDING
 app.get("/plant-request", async function (req, res) {
     await find(req.query);
-    setTimeout(() => { res.send(DATA); }, 1000);
+    setTimeout(() => { res.send(DATA); }, 500);
 })
 
 
